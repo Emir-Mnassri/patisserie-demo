@@ -1,0 +1,39 @@
+{
+"nav": {
+"home": "Accueil",
+"products": "Produits",
+"cart": "Panier",
+"checkout": "Commander"
+},
+"product": {
+"addToCart": "Ajouter au panier",
+"price": "Prix",
+"inStock": "En stock",
+"outOfStock": "Rupture de stock",
+"pieces": "pièces"
+},
+"checkout": {
+"title": "Finaliser la commande",
+"fullName": "Nom complet",
+"phone": "Numéro de téléphone",
+"address": "Adresse complète",
+"city": "Ville",
+"wilaya": "Wilaya",
+"paymentMethod": "Paiement à la livraison",
+"paymentNote": "Vous payez à la réception de votre commande",
+"submit": "Confirmer la commande",
+"orderSummary": "Résumé de la commande",
+"total": "Total"
+},
+"order": {"confirmed": "Commande confirmée",
+"number": "Numéro de commande",
+"thankYou": "Merci pour votre commande !"
+},
+"admin": {
+"dashboard": "Tableau de bord",
+"products": "Produits",
+"orders": "Commandes",
+"analytics": "Analytiques",
+"logout": "Déconnexion"
+}
+}

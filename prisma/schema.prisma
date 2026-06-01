@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            String      @id @default(cuid())
+  name          String
+  nameAr        String?
+  description   String?
+  descriptionAr String?
+
+  // Pricing & units — supports both "by the kilo" and "per piece"
+  unit          ProductUnit @default(KG)
+  price         Decimal     @db.Decimal(10, 3)  // price per kg OR per piece
+
+  // Stock: for KG products this is kg available; for PIECE it's count
+  stock         Decimal     @db.Decimal(10, 3) @default(0)
+
+  images        String[]
+  category      String?
+  occasion      Occasion?   @default(NONE)      // Ramadan / Aid / wedding etc.
+  isActive      Boolean     @default(true)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[]
+}
+
+model Order {
+  id              String          @id @default(cuid())
+  orderNumber     String          @unique
+  status          OrderStatus     @default(PENDING)
+
+  // Customer info
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  customerCity    String
+  customerWilaya  String
+
+  // Fulfillment — pastry is fresh, so timing matters
+  fulfillmentType FulfillmentType @default(DELIVERY)
+  fulfillmentDate DateTime                            // when they want it
+  deliveryZone    String?
+  deliveryFee     Decimal?        @db.Decimal(10, 3)
+
+  notes           String?
+  totalAmount     Decimal         @db.Decimal(10, 3)
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id          String      @id @default(cuid())
+  orderId     String
+  productId   String
+  productName String
+  unit        ProductUnit
+  quantity    Decimal     @db.Decimal(10, 3)   // kg or piece count
+  unitPrice   Decimal     @db.Decimal(10, 3)   // price per kg/piece at order time
+  lineTotal   Decimal     @db.Decimal(10, 3)   // quantity × unitPrice
+
+  order       Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product     @relation(fields: [productId], references: [id])
+}
+
+model CustomCakeRequest {
+  id          String            @id @default(cuid())
+  customerName  String
+  customerPhone String
+  occasion    String?
+  eventDate   DateTime?
+  servings    Int?
+  message     String                              // their description
+  photoUrl    String?                             // optional reference photo
+  status      CustomRequestStatus @default(NEW)
+  createdAt   DateTime          @default(now())
+}
+
+model DeliveryZone {
+  id          String   @id @default(cuid())
+  name        String                              // e.g. "Tunis Centre"
+  minOrder    Decimal  @db.Decimal(10, 3) @default(0)
+  deliveryFee Decimal  @db.Decimal(10, 3) @default(0)
+  isActive    Boolean  @default(true)
+}
+
+enum ProductUnit {
+  KG
+  PIECE
+}
+
+enum Occasion {
+  NONE
+  RAMADAN
+  AID
+  WEDDING
+  BIRTHDAY
+}
+
+enum FulfillmentType {
+  DELIVERY
+  PICKUP
+}
+
+enum OrderStatus {
+  PENDING
+  APPROVED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum CustomRequestStatus {
+  NEW
+  CONTACTED
+  CONFIRMED
+  DECLINED
+}

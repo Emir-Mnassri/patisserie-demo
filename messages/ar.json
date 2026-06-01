@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "cart": "السلة",
+    "checkout": "اطلب الآن"
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "price": "السعر",
+    "inStock": "متوفر في المخزون",
+    "outOfStock": "نفذ من المخزون",
+    "pieces": "قطع"
+  },
+  "checkout": {
+    "title": "تأكيد الطلب",
+    "fullName": "الاسم الكامل",
+    "phone": "رقم الهاتف",
+    "address": "العنوان الكامل",
+    "city": "المدينة",
+    "wilaya": "الولاية",
+    "paymentMethod": "الدفع عند الاستلام",
+    "paymentNote": "ستدفع عند وصول طلبك",
+    "submit": "تأكيد الطلب",
+    "orderSummary": "ملخص الطلب",
+    "total": "المجموع"
+  },
+  "order": {
+    "confirmed": "تم تأكيد الطلب",
+    "number": "رقم الطلب",
+    "thankYou": "شكراً على طلبك!"
+  },
+  "admin": {
+    "dashboard": "لوحة التحكم",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "analytics": "التحليلات",
+    "logout": "تسجيل الخروج"
+  }
+}
