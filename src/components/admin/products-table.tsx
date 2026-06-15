@@ -25,16 +25,29 @@ import { formatTND } from "@/lib/utils"
 import { Search, Plus, Pencil, Trash2 } from "lucide-react"
 
 type Product = {
-  id: string
-  name: string
-  nameAr: string | null
-  unit: "KG" | "PIECE"
-  price: number
-  stock: number
-  category: string | null
-  occasion: string | null
-  isActive: boolean
+
+id: string
+
+name: string
+
+nameAr: string | null
+
+unit: "KG" | "PIECE"
+
+price: number
+
+stock: number
+
+category: string | null
+
+occasion: string | null
+
+isActive: boolean
+
+images: string[]
+
 }
+
 
 export function ProductsTable({ products }: { products: Product[] }) {
   const [query, setQuery] = useState("")
