@@ -125,10 +125,10 @@ export function AnalyticsView({ initial }: { initial: Analytics }) {
                   tickFormatter={(v) => `${v} DT`}
                 />
                 <Tooltip
-                  formatter={(value: number) => [
-                    formatTND(value),
-                    "Chiffre d'affaires",
-                  ]}
+                  formatter={(value: number | undefined) => [
+					formatTND(value ?? 0),
+					"Chiffre d'affaires",
+				  ]}
                   labelStyle={{ fontWeight: 600 }}
                 />
                 <Line
