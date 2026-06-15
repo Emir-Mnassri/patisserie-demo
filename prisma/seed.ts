@@ -300,9 +300,8 @@ status: "NEW",
 },
 
 })
-console.log(✅ Seeded ${PRODUCTS.length} products, 4 zones, ${totalOrders + 1} orders, 1 custom request.)
+console.log("Seeded " + PRODUCTS.length + " products, 4 zones, " + (totalOrders + 1) + " orders, 1 custom request.")
 
-}
 main()
 
 .catch((e) => { console.error(e); process.exit(1) })
