@@ -126,9 +126,9 @@ export function AnalyticsView({ initial }: { initial: Analytics }) {
                 />
                 <Tooltip
                   formatter={(value) => [
-				  formatTND(Number(value) || 0),
-				  "Chiffre d'affaires",
-				  ]}
+					formatTND(Number(value) || 0),
+					"Chiffre d'affaires",
+					]}
                   labelStyle={{ fontWeight: 600 }}
                 />
                 <Line
@@ -184,10 +184,10 @@ export function AnalyticsView({ initial }: { initial: Analytics }) {
                   width={150}
                 />
                 <Tooltip
-                  formatter={(value: number) => [
-                    formatTND(value),
-                    "Chiffre d'affaires",
-                  ]}
+                  formatter={(value) => [
+					formatTND(Number(value) || 0),
+					"Chiffre d'affaires",
+				  ]}
                   labelStyle={{ fontWeight: 600 }}
                 />
                 <Bar
