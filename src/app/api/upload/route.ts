@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
-import path from "path"
 import { auth } from "@/lib/auth"
+import { v2 as cloudinary } from "cloudinary"
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 export async function POST(req: NextRequest) {
   // Only logged-in admin can upload
@@ -34,15 +39,19 @@ export async function POST(req: NextRequest) {
 
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
+  const base64 = buffer.toString("base64")
+  const dataUri = `data:${file.type};base64,${base64}`
 
-  // Unique filename
-  const ext = file.name.split(".").pop()
-  const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-
-  const uploadDir = path.join(process.cwd(), "public", "uploads")
-  await mkdir(uploadDir, { recursive: true })
-  await writeFile(path.join(uploadDir, filename), buffer)
-
-  // Public URL Next.js serves from /public
-  return NextResponse.json({ url: `/uploads/${filename}` })
+  try {
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "products",
+    })
+    return NextResponse.json({ url: result.secure_url })
+  } catch (err) {
+    console.error("Cloudinary upload error:", err)
+    return NextResponse.json(
+      { error: "Échec du téléchargement vers Cloudinary" },
+      { status: 500 }
+    )
+  }
 }
