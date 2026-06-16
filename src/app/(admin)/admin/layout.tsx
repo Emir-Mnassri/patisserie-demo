@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import { auth } from "@/lib/auth"
 import { Sidebar } from "@/components/admin/sidebar"
+import { MobileSidebar } from "@/components/admin/mobile-sidebar"
 import { Button } from "@/components/ui/button"
 import { logout } from "./logout-action"
 import { LogOut } from "lucide-react"
@@ -29,12 +30,15 @@ export default async function AdminLayout({
 
       {/* Main area */}
       <div className="flex flex-1 flex-col">
-        <header className="flex h-16 items-center justify-between border-b bg-white px-6">
-          <div className="text-sm text-neutral-500">
-            Connecté en tant que{" "}
-            <span className="font-medium text-neutral-900">
-              {session.user?.email}
-            </span>
+        <header className="flex h-16 items-center justify-between border-b bg-white px-4 md:px-6">
+          <div className="flex items-center gap-3">
+            <MobileSidebar storeName="Ma Pâtisserie" />
+            <div className="text-sm text-neutral-500">
+              Connecté en tant que{" "}
+              <span className="font-medium text-neutral-900">
+                {session.user?.email}
+              </span>
+            </div>
           </div>
           <form action={logout}>
             <Button variant="ghost" size="sm" type="submit">
@@ -43,7 +47,6 @@ export default async function AdminLayout({
             </Button>
           </form>
         </header>
-
         <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
