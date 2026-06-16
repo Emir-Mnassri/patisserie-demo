@@ -1,3 +1,7 @@
+"use client"
+
+import { useState } from "react"
+import { Search } from "lucide-react"
 import { ProductCard } from "./product-card"
 
 type Product = {
@@ -21,7 +25,7 @@ type Occasion = {
 }
 
 const OCCASIONS: Occasion[] = [
-  { key: "RAMADAN",  label: "Ramadan",      labelAr: "رمضان",     icon: "☪️", desc: "Spécialités de la saison sacrée" },
+  { key: "RAMADAN",  label: "Ramadan",      labelAr: "رمضان",     icon: "☪", desc: "Spécialités de la saison sacrée" },
   { key: "WEDDING",  label: "Mariage",      labelAr: "عرس",       icon: "🌸", desc: "Sublimez vos célébrations" },
   { key: "BIRTHDAY", label: "Anniversaire", labelAr: "عيد ميلاد", icon: "🎂", desc: "Gâteaux et douceurs de fête" },
   { key: "AID",      label: "Aïd",          labelAr: "العيد",     icon: "✨", desc: "Pâtisseries traditionnelles de l'Aïd" },
@@ -101,9 +105,47 @@ function CustomCakeTeaser() {
   )
 }
 
+function SearchBar({ value, onChange }: { value: string, onChange: (v: string) => void }) {
+  return (
+    <div style={{ maxWidth: "480px", margin: "0 auto 2.5rem", position: "relative" }}>
+      <Search
+        size={18}
+        style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", color: "var(--muted-text)" }}
+      />
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Rechercher un produit..."
+        style={{
+          width: "100%",
+          padding: "0.85rem 1rem 0.85rem 2.75rem",
+          borderRadius: "10px",
+          border: "2px solid var(--gold)",
+          backgroundColor: "white",
+          fontSize: "0.95rem",
+          color: "var(--warm-text)",
+          fontFamily: "'Lora', serif",
+          outline: "none",
+        }}
+      />
+    </div>
+  )
+}
+
 export function StorefrontHome({ products }: { products: Product[] }) {
+  const [query, setQuery] = useState("")
+
   const byOccasion = (key: string) => products.filter((p) => p.occasion === key)
   const hasOccasions = OCCASIONS.some((occ) => byOccasion(occ.key).length > 0)
+
+  const normalizedQuery = query.trim().toLowerCase()
+  const filteredProducts = normalizedQuery
+    ? products.filter((p) =>
+        p.name.toLowerCase().includes(normalizedQuery) ||
+        (p.nameAr ?? "").toLowerCase().includes(normalizedQuery)
+      )
+    : products
 
   return (
     <main>
@@ -142,8 +184,8 @@ export function StorefrontHome({ products }: { products: Product[] }) {
         </div>
       </section>
 
-      {/* Occasion collections — only show if any products have occasions tagged */}
-      {hasOccasions && (
+      {/* Occasion collections — only show if any products have occasions tagged, and no active search */}
+      {hasOccasions && !normalizedQuery && (
         <section style={{ padding: "4rem 1.5rem 2rem", backgroundColor: "var(--cream)" }}>
           <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
             <SectionHeading title="Nos collections" subtitle="Des pâtisseries pour chaque moment de votre vie" />
@@ -157,8 +199,8 @@ export function StorefrontHome({ products }: { products: Product[] }) {
         </section>
       )}
 
-      {/* Per-occasion product sections */}
-      {OCCASIONS.map((occ) => {
+      {/* Per-occasion product sections — hidden while searching */}
+      {!normalizedQuery && OCCASIONS.map((occ) => {
         const oProducts = byOccasion(occ.key)
         if (oProducts.length === 0) return null
         return <OccasionSection key={occ.key} occ={occ} products={oProducts} />
@@ -169,15 +211,16 @@ export function StorefrontHome({ products }: { products: Product[] }) {
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <SectionHeading
             title="Toutes nos pâtisseries"
-            subtitle={products.length + " produit" + (products.length !== 1 ? "s" : "") + " disponible" + (products.length !== 1 ? "s" : "")}
+            subtitle={filteredProducts.length + " produit" + (filteredProducts.length !== 1 ? "s" : "") + " disponible" + (filteredProducts.length !== 1 ? "s" : "")}
           />
-          {products.length === 0 ? (
+          <SearchBar value={query} onChange={setQuery} />
+          {filteredProducts.length === 0 ? (
             <p style={{ color: "var(--muted-text)", textAlign: "center", padding: "3rem 0" }}>
-              Aucun produit disponible pour le moment.
+              {normalizedQuery ? "Aucun produit ne correspond à votre recherche." : "Aucun produit disponible pour le moment."}
             </p>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
-              {products.map((p) => <ProductCard key={p.id} product={p} />)}
+              {filteredProducts.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           )}
         </div>
