@@ -155,13 +155,13 @@ export function StorefrontHome({ products }: { products: Product[] }) {
         <div style={{ position: "absolute", bottom: "-100px", left: "-100px", width: "380px", height: "380px", borderRadius: "50%", border: "2px solid rgba(201,146,42,0.08)", pointerEvents: "none" }} />
 
         <p style={{ color: "var(--gold)", fontSize: "0.72rem", letterSpacing: "0.3em", fontWeight: 600, textTransform: "uppercase", marginBottom: "1.25rem" }}>
-          ✦ Pâtisserie artisanale tunisienne ✦
+          ✦ Pâtisserie en ligne · Sfax ✦
         </p>
 
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 700, color: "var(--espresso)", lineHeight: 1.1, marginBottom: "1rem" }}>
-          Des saveurs qui racontent
+          Bienvenue chez
           <br />
-          <span style={{ color: "var(--gold)", fontStyle: "italic" }}>notre héritage</span>
+          <span className="brand-script" style={{ color: "var(--gold)", fontSize: "1.3em" }}>Caramel</span>
         </h1>
 
         <p dir="rtl" style={{ fontFamily: "'Lora', serif", color: "var(--muted-text)", fontSize: "1.15rem", marginBottom: "2.5rem" }}>
