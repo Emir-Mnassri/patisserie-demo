@@ -30,6 +30,9 @@ type Order = {
   items: OrderItem[]
 }
 
+const BROWN = "#33100E"
+const GOLD = "#C9922A"
+
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 11, fontFamily: "Helvetica" },
   header: {
@@ -37,11 +40,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     marginBottom: 20,
-    borderBottom: "2 solid #111",
+    borderBottom: `2 solid ${BROWN}`,
     paddingBottom: 12,
   },
-  shopName: { fontSize: 18, fontFamily: "Helvetica-Bold" },
-  slipTitle: { fontSize: 13, fontFamily: "Helvetica-Bold", textAlign: "right" },
+  shopName: { fontSize: 18, fontFamily: "Helvetica-Bold", color: BROWN },
+  slipTitle: { fontSize: 13, fontFamily: "Helvetica-Bold", textAlign: "right", color: BROWN },
   orderNum: { fontSize: 10, color: "#666", textAlign: "right", marginTop: 2 },
   section: { marginBottom: 16 },
   sectionTitle: {
@@ -73,17 +76,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 8,
     paddingTop: 8,
-    borderTop: "1 solid #111",
+    borderTop: `1 solid ${BROWN}`,
     fontSize: 13,
     fontFamily: "Helvetica-Bold",
+    color: BROWN,
   },
   cod: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#fff7ed",
-    border: "1 solid #fb923c",
+    backgroundColor: "#FBF1E0",
+    border: `1 solid ${GOLD}`,
   },
-  codText: { fontFamily: "Helvetica-Bold", color: "#9a3412" },
+  codText: { fontFamily: "Helvetica-Bold", color: BROWN },
   footer: {
     position: "absolute",
     bottom: 30,
@@ -110,7 +114,7 @@ function fmtDate(iso: string) {
 
 export function DeliveryPDF({
   order,
-  shopName = "Ma Pâtisserie",
+  shopName = "Caramel Pâtisserie",
 }: {
   order: Order
   shopName?: string

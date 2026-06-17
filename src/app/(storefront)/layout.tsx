@@ -19,10 +19,15 @@ export default function StorefrontLayout({ children }: { children: ReactNode }) 
             marginTop: "4rem",
           }}
         >
-          <p style={{ color: "var(--gold-light)", fontFamily: "'Playfair Display', serif", marginBottom: "0.5rem" }}>
-            Ma Pâtisserie
+          <p style={{ marginBottom: "0.5rem" }}>
+            <span className="brand-script" style={{ color: "var(--gold-light)", fontSize: "1.5rem" }}>
+              Caramel
+            </span>{" "}
+            <span style={{ color: "var(--gold-light)", fontFamily: "'Playfair Display', serif" }}>
+              Pâtisserie
+            </span>
           </p>
-          <p>Livraison à domicile · Paiement à la réception · Tunis</p>
+          <p>Livraison à domicile · Paiement à la réception · Sfax</p>
         </footer>
       </div>
     </CartProvider>
