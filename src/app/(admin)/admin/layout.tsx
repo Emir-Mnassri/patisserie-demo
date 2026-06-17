@@ -23,7 +23,12 @@ export default async function AdminLayout({
       {/* Sidebar */}
       <aside className="hidden w-60 shrink-0 border-r bg-white md:block">
         <div className="flex h-16 items-center border-b px-5">
-          <span className="text-lg font-semibold">Ma Pâtisserie</span>
+          <span className="text-lg font-semibold">
+            <span style={{ fontFamily: "'Caveat', cursive", fontWeight: 700, fontSize: "1.3em", color: "#33100E" }}>
+              Caramel
+            </span>{" "}
+            Pâtisserie
+          </span>
         </div>
         <Sidebar />
       </aside>
@@ -32,7 +37,7 @@ export default async function AdminLayout({
       <div className="flex flex-1 flex-col">
         <header className="flex h-16 items-center justify-between border-b bg-white px-4 md:px-6">
           <div className="flex items-center gap-3">
-            <MobileSidebar storeName="Ma Pâtisserie" />
+            <MobileSidebar storeName="Caramel Pâtisserie" />
             <div className="text-sm text-neutral-500">
               Connecté en tant que{" "}
               <span className="font-medium text-neutral-900">
