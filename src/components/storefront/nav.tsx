@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import Image from "next/image"
 import { useCart } from "@/lib/cart-context"
 import { ShoppingBag } from "lucide-react"
 import { useState, useEffect } from "react"
@@ -35,28 +36,15 @@ export function StorefrontNav() {
         justifyContent: "space-between",
       }}>
         {/* Logo */}
-        <Link href="/" style={{ textDecoration: "none", display: "flex", flexDirection: "column", gap: "3px" }}>
-          <span style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: "6px",
-            lineHeight: 1,
-            WebkitFontSmoothing: "antialiased",
-          }}>
-            <span className="brand-script" style={{ color: "var(--gold-light)", fontSize: "2rem" }}>
-              Caramel
-            </span>
-            <span style={{
-              fontFamily: "'Playfair Display', serif",
-              color: "var(--gold-light)",
-              fontSize: "0.95rem",
-              fontWeight: 600,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-            }}>
-              Pâtisserie
-            </span>
-          </span>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "10px" }}>
+          <Image
+            src="/caramel.jpg"
+            alt="Caramel Pâtisserie"
+            width={48}
+            height={48}
+            style={{ borderRadius: "50%", objectFit: "cover" }}
+            priority
+          />
           <span style={{
             color: "var(--gold)",
             fontSize: "0.8rem",
