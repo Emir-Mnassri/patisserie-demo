@@ -1,5 +1,4 @@
 "use client"
-
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -19,7 +18,6 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
-
   return (
     <nav className="flex flex-col gap-1 p-3">
       {navItems.map((item) => {
@@ -29,14 +27,45 @@ export function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-              active
-                ? "bg-neutral-900 text-white"
-                : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
-            )}
+            style={active ? {
+              backgroundColor: "#33100E",
+              color: "#E8B84B",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              borderRadius: "8px",
+              padding: "10px 12px",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              textDecoration: "none",
+              transition: "all 0.2s",
+            } : {
+              backgroundColor: "transparent",
+              color: "#5C2620",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              borderRadius: "8px",
+              padding: "10px 12px",
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              textDecoration: "none",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={e => {
+              if (!active) {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "#FBF1E0"
+                ;(e.currentTarget as HTMLElement).style.color = "#33100E"
+              }
+            }}
+            onMouseLeave={e => {
+              if (!active) {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"
+                ;(e.currentTarget as HTMLElement).style.color = "#5C2620"
+              }
+            }}
           >
-            <Icon className="h-4 w-4" />
+            <Icon style={{ width: "16px", height: "16px" }} />
             {item.label}
           </Link>
         )

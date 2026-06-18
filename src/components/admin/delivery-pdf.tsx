@@ -6,6 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
 } from "@react-pdf/renderer"
 
 type OrderItem = {
@@ -31,71 +32,192 @@ type Order = {
 }
 
 const BROWN = "#33100E"
+const BROWN_MID = "#5C2620"
 const GOLD = "#C9922A"
+const GOLD_LIGHT = "#E8B84B"
+const CREAM = "#FDF6E3"
+const CREAM_DARK = "#F0E2BB"
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 11, fontFamily: "Helvetica" },
-  header: {
+  page: {
+    padding: 0,
+    fontSize: 11,
+    fontFamily: "Helvetica",
+    backgroundColor: CREAM,
+  },
+
+  // Top header band
+  headerBand: {
+    backgroundColor: BROWN,
+    padding: "28 40 20 40",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
-    borderBottom: `2 solid ${BROWN}`,
-    paddingBottom: 12,
+    alignItems: "center",
+    borderBottom: `4 solid ${GOLD}`,
   },
-  shopName: { fontSize: 18, fontFamily: "Helvetica-Bold", color: BROWN },
-  slipTitle: { fontSize: 13, fontFamily: "Helvetica-Bold", textAlign: "right", color: BROWN },
-  orderNum: { fontSize: 10, color: "#666", textAlign: "right", marginTop: 2 },
-  section: { marginBottom: 16 },
-  sectionTitle: {
-    fontSize: 10,
+  logoArea: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  logoImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+  },
+  shopNameBlock: {
+    flexDirection: "column",
+    gap: 2,
+  },
+  shopName: {
+    fontSize: 20,
     fontFamily: "Helvetica-Bold",
-    color: "#666",
-    textTransform: "uppercase",
-    marginBottom: 4,
+    color: GOLD_LIGHT,
+    letterSpacing: 1,
   },
-  bold: { fontFamily: "Helvetica-Bold" },
-  row: { flexDirection: "row", justifyContent: "space-between" },
+  shopSub: {
+    fontSize: 9,
+    color: GOLD,
+    letterSpacing: 2,
+  },
+  slipBadge: {
+    backgroundColor: GOLD,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 4,
+  },
+  slipTitle: {
+    fontSize: 12,
+    fontFamily: "Helvetica-Bold",
+    color: BROWN,
+    textAlign: "center",
+    letterSpacing: 2,
+  },
+  orderNum: {
+    fontSize: 9,
+    color: GOLD,
+    textAlign: "center",
+    marginTop: 4,
+  },
+
+  // Body
+  body: {
+    padding: "24 40",
+  },
+  section: {
+    marginBottom: 18,
+  },
+  sectionTitle: {
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: GOLD,
+    textTransform: "uppercase",
+    letterSpacing: 2,
+    marginBottom: 6,
+    paddingBottom: 4,
+    borderBottom: `1 solid ${CREAM_DARK}`,
+  },
+  bold: {
+    fontFamily: "Helvetica-Bold",
+    color: BROWN,
+  },
+  text: {
+    color: BROWN_MID,
+    fontSize: 11,
+    marginBottom: 2,
+  },
+
+  // Table
   tableHeader: {
     flexDirection: "row",
-    borderBottom: "1 solid #ccc",
-    paddingBottom: 4,
+    backgroundColor: BROWN,
+    padding: "6 8",
+    borderRadius: 4,
     marginBottom: 4,
+  },
+  tableHeaderText: {
     fontFamily: "Helvetica-Bold",
+    color: GOLD_LIGHT,
+    fontSize: 10,
   },
   tableRow: {
     flexDirection: "row",
-    paddingVertical: 3,
-    borderBottom: "0.5 solid #eee",
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    borderBottom: `0.5 solid ${CREAM_DARK}`,
+  },
+  tableRowAlt: {
+    flexDirection: "row",
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    backgroundColor: "#FAF0DC",
+    borderBottom: `0.5 solid ${CREAM_DARK}`,
   },
   colName: { flex: 3 },
   colQty: { flex: 1, textAlign: "right" },
   colTotal: { flex: 1, textAlign: "right" },
+
+  // Total
   totalRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 8,
-    paddingTop: 8,
-    borderTop: `1 solid ${BROWN}`,
-    fontSize: 13,
-    fontFamily: "Helvetica-Bold",
-    color: BROWN,
+    marginTop: 10,
+    padding: "10 12",
+    backgroundColor: BROWN,
+    borderRadius: 4,
   },
+  totalLabel: {
+    fontSize: 12,
+    fontFamily: "Helvetica-Bold",
+    color: GOLD_LIGHT,
+    letterSpacing: 1,
+  },
+  totalAmount: {
+    fontSize: 14,
+    fontFamily: "Helvetica-Bold",
+    color: GOLD_LIGHT,
+  },
+
+  // COD box
   cod: {
     marginTop: 20,
-    padding: 10,
-    backgroundColor: "#FBF1E0",
-    border: `1 solid ${GOLD}`,
+    padding: "12 16",
+    backgroundColor: CREAM_DARK,
+    border: `2 solid ${GOLD}`,
+    borderRadius: 6,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  codText: { fontFamily: "Helvetica-Bold", color: BROWN },
-  footer: {
+  codLabel: {
+    fontFamily: "Helvetica-Bold",
+    color: BROWN,
+    fontSize: 11,
+    letterSpacing: 1,
+  },
+  codAmount: {
+    fontFamily: "Helvetica-Bold",
+    color: GOLD,
+    fontSize: 14,
+  },
+
+  // Footer band
+  footerBand: {
     position: "absolute",
-    bottom: 30,
-    left: 40,
-    right: 40,
-    fontSize: 9,
-    color: "#999",
-    textAlign: "center",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: BROWN,
+    borderTop: `2 solid ${GOLD}`,
+    padding: "8 40",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  footerText: {
+    fontSize: 8,
+    color: GOLD,
+    opacity: 0.8,
   },
 })
 
@@ -122,81 +244,101 @@ export function DeliveryPDF({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.shopName}>{shopName}</Text>
-            <Text style={{ fontSize: 9, color: "#666", marginTop: 2 }}>
-              Bon de livraison
-            </Text>
+
+        {/* Header band with logo */}
+        <View style={styles.headerBand}>
+          <View style={styles.logoArea}>
+            <Image
+              style={styles.logoImage}
+              src="./public/caramel.jpg"
+            />
+            <View style={styles.shopNameBlock}>
+              <Text style={styles.shopName}>{shopName}</Text>
+              <Text style={styles.shopSub}>PÂTISSERIE EN LIGNE · SFAX</Text>
+            </View>
           </View>
           <View>
-            <Text style={styles.slipTitle}>
-              {order.fulfillmentType === "DELIVERY" ? "LIVRAISON" : "RETRAIT"}
-            </Text>
+            <View style={styles.slipBadge}>
+              <Text style={styles.slipTitle}>
+                {order.fulfillmentType === "DELIVERY" ? "BON DE LIVRAISON" : "BON DE RETRAIT"}
+              </Text>
+            </View>
             <Text style={styles.orderNum}>{order.orderNumber}</Text>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Client</Text>
-          <Text style={styles.bold}>{order.customerName}</Text>
-          <Text>{order.customerPhone}</Text>
-          <Text>
-            {order.customerAddress}, {order.customerCity}, {order.customerWilaya}
-          </Text>
-          {order.deliveryZone ? <Text>Zone : {order.deliveryZone}</Text> : null}
-        </View>
+        {/* Body */}
+        <View style={styles.body}>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {order.fulfillmentType === "DELIVERY"
-              ? "Date de livraison"
-              : "Date de retrait"}
-          </Text>
-          <Text style={styles.bold}>{fmtDate(order.fulfillmentDate)}</Text>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Articles</Text>
-          <View style={styles.tableHeader}>
-            <Text style={styles.colName}>Produit</Text>
-            <Text style={styles.colQty}>Qté</Text>
-            <Text style={styles.colTotal}>Total</Text>
+          {/* Client */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Informations client</Text>
+            <Text style={styles.bold}>{order.customerName}</Text>
+            <Text style={styles.text}>{order.customerPhone}</Text>
+            <Text style={styles.text}>
+              {order.customerAddress}, {order.customerCity}, {order.customerWilaya}
+            </Text>
+            {order.deliveryZone
+              ? <Text style={styles.text}>Zone : {order.deliveryZone}</Text>
+              : null}
           </View>
-          {order.items.map((it, i) => (
-            <View key={i} style={styles.tableRow}>
-              <Text style={styles.colName}>{it.productName}</Text>
-              <Text style={styles.colQty}>
-                {it.quantity} {it.unit === "KG" ? "kg" : "pcs"}
-              </Text>
-              <Text style={styles.colTotal}>{fmt(it.lineTotal)}</Text>
-            </View>
-          ))}
 
-          {order.deliveryFee ? (
-            <View style={styles.tableRow}>
-              <Text style={styles.colName}>Frais de livraison</Text>
-              <Text style={styles.colQty}>—</Text>
-              <Text style={styles.colTotal}>{fmt(order.deliveryFee)}</Text>
-            </View>
-          ) : null}
-
-          <View style={styles.totalRow}>
-            <Text>TOTAL À ENCAISSER</Text>
-            <Text>{fmt(order.totalAmount)}</Text>
+          {/* Date */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              {order.fulfillmentType === "DELIVERY" ? "Date de livraison" : "Date de retrait"}
+            </Text>
+            <Text style={styles.bold}>{fmtDate(order.fulfillmentDate)}</Text>
           </View>
+
+          {/* Items */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Articles commandés</Text>
+            <View style={styles.tableHeader}>
+              <Text style={[styles.tableHeaderText, styles.colName]}>Produit</Text>
+              <Text style={[styles.tableHeaderText, styles.colQty]}>Qté</Text>
+              <Text style={[styles.tableHeaderText, styles.colTotal]}>Total</Text>
+            </View>
+            {order.items.map((it, i) => (
+              <View key={i} style={i % 2 === 0 ? styles.tableRow : styles.tableRowAlt}>
+                <Text style={[styles.text, styles.colName]}>{it.productName}</Text>
+                <Text style={[styles.text, styles.colQty]}>
+                  {it.quantity} {it.unit === "KG" ? "kg" : "pcs"}
+                </Text>
+                <Text style={[styles.text, styles.colTotal]}>{fmt(it.lineTotal)}</Text>
+              </View>
+            ))}
+
+            {order.deliveryFee ? (
+              <View style={styles.tableRow}>
+                <Text style={[styles.text, styles.colName]}>Frais de livraison</Text>
+                <Text style={[styles.text, styles.colQty]}>—</Text>
+                <Text style={[styles.text, styles.colTotal]}>{fmt(order.deliveryFee)}</Text>
+              </View>
+            ) : null}
+
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>TOTAL À ENCAISSER</Text>
+              <Text style={styles.totalAmount}>{fmt(order.totalAmount)}</Text>
+            </View>
+          </View>
+
+          {/* COD */}
+          <View style={styles.cod}>
+            <Text style={styles.codLabel}>PAIEMENT À LA LIVRAISON</Text>
+            <Text style={styles.codAmount}>{fmt(order.totalAmount)}</Text>
+          </View>
+
         </View>
 
-        <View style={styles.cod}>
-          <Text style={styles.codText}>
-            PAIEMENT À LA LIVRAISON — Encaisser {fmt(order.totalAmount)}
+        {/* Footer band */}
+        <View style={styles.footerBand} fixed>
+          <Text style={styles.footerText}>{shopName} — Sfax, Tunisie</Text>
+          <Text style={styles.footerText}>
+            Bon généré le {new Date().toLocaleDateString("fr-FR")}
           </Text>
         </View>
 
-        <Text style={styles.footer}>
-          {shopName} — Bon généré le{" "}
-          {new Date().toLocaleDateString("fr-FR")}
-        </Text>
       </Page>
     </Document>
   )
