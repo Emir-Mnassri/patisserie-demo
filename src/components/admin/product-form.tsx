@@ -49,15 +49,29 @@ export function ProductForm({
     isActive: product?.isActive ?? true,
     images: product?.images ?? [],
   })
+
+  // Store price and stock as strings while typing to allow decimals and empty state
+  const [priceStr, setPriceStr] = useState(
+    product?.price ? String(product.price) : ""
+  )
+  const [stockStr, setStockStr] = useState(
+    product?.stock ? String(product.stock) : ""
+  )
+
   const [saving, setSaving] = useState(false)
 
   async function handleSubmit() {
     setSaving(true)
     try {
+      const finalForm: ProductInput = {
+        ...form,
+        price: parseFloat(priceStr) || 0,
+        stock: parseFloat(stockStr) || 0,
+      }
       if (product) {
-        await updateProduct(product.id, form)
+        await updateProduct(product.id, finalForm)
       } else {
-        await createProduct(form)
+        await createProduct(finalForm)
       }
       onDone()
     } finally {
@@ -111,8 +125,13 @@ export function ProductForm({
           <Input
             type="number"
             step="0.001"
-            value={form.price}
-            onChange={(e) => set("price", parseFloat(e.target.value) || 0)}
+            min="0"
+            placeholder="0.000"
+            value={priceStr}
+            onChange={(e) => setPriceStr(e.target.value)}
+            onFocus={(e) => {
+              if (priceStr === "0" || priceStr === "") e.target.select()
+            }}
           />
         </div>
       </div>
@@ -123,8 +142,13 @@ export function ProductForm({
           <Input
             type="number"
             step="0.001"
-            value={form.stock}
-            onChange={(e) => set("stock", parseFloat(e.target.value) || 0)}
+            min="0"
+            placeholder="0"
+            value={stockStr}
+            onChange={(e) => setStockStr(e.target.value)}
+            onFocus={(e) => {
+              if (stockStr === "0" || stockStr === "") e.target.select()
+            }}
           />
         </div>
 
