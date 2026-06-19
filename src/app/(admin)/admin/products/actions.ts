@@ -1,5 +1,4 @@
 "use server"
-
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
@@ -7,8 +6,6 @@ export async function getProducts() {
   const products = await prisma.product.findMany({
     orderBy: { createdAt: "desc" },
   })
-
-  // Decimal fields can't cross to client components as-is — convert to numbers
   return products.map((p) => ({
     id: p.id,
     name: p.name,
@@ -52,6 +49,7 @@ export async function createProduct(data: ProductInput) {
     },
   })
   revalidatePath("/admin/products")
+  revalidatePath("/")
 }
 
 export async function updateProduct(id: string, data: ProductInput) {
@@ -71,9 +69,11 @@ export async function updateProduct(id: string, data: ProductInput) {
     },
   })
   revalidatePath("/admin/products")
+  revalidatePath("/")
 }
 
 export async function deleteProduct(id: string) {
   await prisma.product.delete({ where: { id } })
   revalidatePath("/admin/products")
+  revalidatePath("/")
 }
