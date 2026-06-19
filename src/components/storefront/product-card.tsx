@@ -56,9 +56,16 @@ export function ProductCard({ product }: { product: Product }) {
     <div className="product-card" style={cardStyle}>
 
       {/* Image area */}
-      <div style={{ position: "relative", height: "200px", overflow: "hidden" }}>
+      <div style={{ position: "relative", height: "200px", overflow: "hidden", backgroundColor: "var(--cream)" }}>
         {product.images.length > 0 ? (
-          <Image src={product.images[0]} alt={product.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            style={{ padding: "8px" }}
+          />
         ) : (
           <div style={{
             height: "100%",
