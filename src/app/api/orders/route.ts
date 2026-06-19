@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { sendPushToAll } from "@/lib/push"
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-
     const {
       orderNumber,
       customerName,
@@ -55,6 +55,13 @@ export async function POST(req: NextRequest) {
         },
       },
     })
+
+    // Send push notification to admin
+    await sendPushToAll({
+      title: "🛍️ Nouvelle commande",
+      body: `${customerName} — ${Number(totalAmount).toFixed(3)} DT`,
+      url: "/admin/orders",
+    }).catch((err) => console.error("Push failed:", err))
 
     return NextResponse.json({ orderNumber: order.orderNumber })
   } catch (err) {
