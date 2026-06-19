@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCart } from "@/lib/cart-context"
 import { useRouter } from "next/navigation"
 import { generateOrderNumber } from "@/lib/utils"
@@ -17,6 +17,14 @@ export default function CheckoutPage() {
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   const [form, setForm] = useState({
     customerName: "",
@@ -32,7 +40,6 @@ export default function CheckoutPage() {
   const set = (k: keyof typeof form, v: string) =>
     setForm((f) => ({ ...f, [k]: v }))
 
-  // Minimum date: tomorrow
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
   const minDate = tomorrow.toISOString().split("T")[0]
@@ -112,19 +119,40 @@ export default function CheckoutPage() {
     letterSpacing: "0.03em",
   }
 
+  const cardStyle = {
+    backgroundColor: "white",
+    border: "1px solid var(--cream-dark)",
+    borderRadius: "12px",
+    padding: "1.5rem",
+  }
+
   return (
-    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "2.5rem 1.5rem 4rem", display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
-      <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", color: "var(--warm-text)", margin: 0 }}>
+    <div style={{
+      maxWidth: "960px",
+      margin: "0 auto",
+      padding: isMobile ? "1.5rem 1rem 4rem" : "2.5rem 1.5rem 4rem",
+    }}>
+      <h1 style={{
+        fontFamily: "'Playfair Display', serif",
+        fontSize: isMobile ? "1.5rem" : "2rem",
+        color: "var(--warm-text)",
+        margin: "0 0 1.5rem",
+      }}>
         Finaliser la commande
       </h1>
 
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.4fr) minmax(0,1fr)", gap: "2rem", alignItems: "start" }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1.4fr) minmax(0,1fr)",
+        gap: "2rem",
+        alignItems: "start",
+      }}>
 
         {/* Form */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
 
           {/* Contact */}
-          <div style={{ backgroundColor: "white", border: "1px solid var(--cream-dark)", borderRadius: "12px", padding: "1.5rem" }}>
+          <div style={cardStyle}>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "var(--warm-text)", margin: "0 0 1.25rem" }}>
               Vos coordonnées
             </h2>
@@ -141,7 +169,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Delivery */}
-          <div style={{ backgroundColor: "white", border: "1px solid var(--cream-dark)", borderRadius: "12px", padding: "1.5rem" }}>
+          <div style={cardStyle}>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "var(--warm-text)", margin: "0 0 1.25rem" }}>
               Livraison ou retrait
             </h2>
@@ -174,7 +202,11 @@ export default function CheckoutPage() {
                     <label style={labelStyle}>Adresse *</label>
                     <input style={inputStyle} value={form.customerAddress} onChange={(e) => set("customerAddress", e.target.value)} placeholder="12 Rue de la Liberté" />
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                  <div style={{
+                    display: "grid",
+                    gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                    gap: "0.75rem",
+                  }}>
                     <div>
                       <label style={labelStyle}>Ville</label>
                       <input style={inputStyle} value={form.customerCity} onChange={(e) => set("customerCity", e.target.value)} placeholder="Tunis" />
@@ -226,8 +258,8 @@ export default function CheckoutPage() {
         </div>
 
         {/* Order summary */}
-        <div style={{ position: "sticky", top: "80px" }}>
-          <div style={{ backgroundColor: "white", border: "1px solid var(--cream-dark)", borderRadius: "12px", padding: "1.25rem" }}>
+        <div style={{ position: isMobile ? "static" : "sticky", top: "80px" }}>
+          <div style={cardStyle}>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "var(--warm-text)", margin: "0 0 1rem" }}>
               Récapitulatif
             </h2>
@@ -279,7 +311,7 @@ export default function CheckoutPage() {
               {submitting ? "Envoi en cours..." : "Confirmer la commande"}
             </button>
             <p style={{ textAlign: "center", fontSize: "0.75rem", color: "var(--muted-text)", marginTop: "0.5rem" }}>
-              Paiement à la livraison · Tunis et environs
+              Paiement à la livraison · Sfax et environs
             </p>
           </div>
         </div>
