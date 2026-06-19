@@ -45,8 +45,6 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica",
     backgroundColor: CREAM,
   },
-
-  // Top header band
   headerBand: {
     backgroundColor: BROWN,
     padding: "28 40 20 40",
@@ -61,16 +59,16 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   logoImage: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
   },
   shopNameBlock: {
     flexDirection: "column",
-    gap: 2,
+    gap: 4,
   },
   shopName: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: "Helvetica-Bold",
     color: GOLD_LIGHT,
     letterSpacing: 1,
@@ -99,8 +97,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 4,
   },
-
-  // Body
   body: {
     padding: "24 40",
   },
@@ -126,8 +122,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginBottom: 2,
   },
-
-  // Table
   tableHeader: {
     flexDirection: "row",
     backgroundColor: BROWN,
@@ -156,8 +150,6 @@ const styles = StyleSheet.create({
   colName: { flex: 3 },
   colQty: { flex: 1, textAlign: "right" },
   colTotal: { flex: 1, textAlign: "right" },
-
-  // Total
   totalRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -177,8 +169,6 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica-Bold",
     color: GOLD_LIGHT,
   },
-
-  // COD box
   cod: {
     marginTop: 20,
     padding: "12 16",
@@ -200,8 +190,6 @@ const styles = StyleSheet.create({
     color: GOLD,
     fontSize: 14,
   },
-
-  // Footer band
   footerBand: {
     position: "absolute",
     bottom: 0,
@@ -213,6 +201,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  footerLogoArea: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  footerLogo: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
   },
   footerText: {
     fontSize: 8,
@@ -237,9 +235,11 @@ function fmtDate(iso: string) {
 export function DeliveryPDF({
   order,
   shopName = "Caramel Pâtisserie",
+  logoUrl = "https://patisserie-tn.vercel.app/caramel.jpg",
 }: {
   order: Order
   shopName?: string
+  logoUrl?: string
 }) {
   return (
     <Document>
@@ -248,10 +248,7 @@ export function DeliveryPDF({
         {/* Header band with logo */}
         <View style={styles.headerBand}>
           <View style={styles.logoArea}>
-            <Image
-              style={styles.logoImage}
-              src="./public/caramel.jpg"
-            />
+            <Image style={styles.logoImage} src={logoUrl} />
             <View style={styles.shopNameBlock}>
               <Text style={styles.shopName}>{shopName}</Text>
               <Text style={styles.shopSub}>PÂTISSERIE EN LIGNE · SFAX</Text>
@@ -270,7 +267,6 @@ export function DeliveryPDF({
         {/* Body */}
         <View style={styles.body}>
 
-          {/* Client */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Informations client</Text>
             <Text style={styles.bold}>{order.customerName}</Text>
@@ -283,7 +279,6 @@ export function DeliveryPDF({
               : null}
           </View>
 
-          {/* Date */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
               {order.fulfillmentType === "DELIVERY" ? "Date de livraison" : "Date de retrait"}
@@ -291,7 +286,6 @@ export function DeliveryPDF({
             <Text style={styles.bold}>{fmtDate(order.fulfillmentDate)}</Text>
           </View>
 
-          {/* Items */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Articles commandés</Text>
             <View style={styles.tableHeader}>
@@ -323,7 +317,6 @@ export function DeliveryPDF({
             </View>
           </View>
 
-          {/* COD */}
           <View style={styles.cod}>
             <Text style={styles.codLabel}>PAIEMENT À LA LIVRAISON</Text>
             <Text style={styles.codAmount}>{fmt(order.totalAmount)}</Text>
@@ -331,9 +324,12 @@ export function DeliveryPDF({
 
         </View>
 
-        {/* Footer band */}
+        {/* Footer band with small logo */}
         <View style={styles.footerBand} fixed>
-          <Text style={styles.footerText}>{shopName} — Sfax, Tunisie</Text>
+          <View style={styles.footerLogoArea}>
+            <Image style={styles.footerLogo} src={logoUrl} />
+            <Text style={styles.footerText}>{shopName} — Sfax, Tunisie</Text>
+          </View>
           <Text style={styles.footerText}>
             Bon généré le {new Date().toLocaleDateString("fr-FR")}
           </Text>
