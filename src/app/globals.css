@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Caveat:wght@600;700&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -122,6 +122,11 @@
 [data-theme="pastry"] h2,
 [data-theme="pastry"] h3 {
   font-family: 'Playfair Display', Georgia, serif;
+}
+
+[data-theme="pastry"] .brand-script {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
 }
 
 [data-theme="pastry"] p {
