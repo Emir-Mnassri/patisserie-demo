@@ -1,14 +1,13 @@
 "use server"
-
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { sendPushToAll } from "@/lib/push"
 
 export async function getOrders() {
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
     include: { items: true },
   })
-
   return orders.map((o) => ({
     id: o.id,
     orderNumber: o.orderNumber,
@@ -36,16 +35,12 @@ export async function getOrders() {
   }))
 }
 
-// Approve an order — strict stock check, all-or-nothing
 export async function approveOrder(orderId: string) {
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: { items: true },
   })
-
-  if (!order) {
-    return { ok: false, error: "Commande introuvable." }
-  }
+  if (!order) return { ok: false, error: "Commande introuvable." }
   if (order.status !== "PENDING") {
     return { ok: false, error: "Cette commande a déjà été traitée." }
   }
@@ -66,15 +61,11 @@ export async function approveOrder(orderId: string) {
       )
     }
   }
-
   if (shortages.length > 0) {
-    return {
-      ok: false,
-      error: "Stock insuffisant :\n" + shortages.join("\n"),
-    }
+    return { ok: false, error: "Stock insuffisant :\n" + shortages.join("\n") }
   }
 
-  // 2. All good — decrement stock and approve, in one transaction
+  // 2. Decrement stock and approve in one transaction
   await prisma.$transaction([
     ...order.items.map((item) =>
       prisma.product.update({
@@ -90,10 +81,27 @@ export async function approveOrder(orderId: string) {
 
   revalidatePath("/admin/orders")
   revalidatePath("/admin/products")
+
+  // 3. Check for low stock after approval and notify
+  const LOW_STOCK_THRESHOLD = 2
+  for (const item of order.items) {
+    const product = await prisma.product.findUnique({
+      where: { id: item.productId },
+    })
+    if (!product) continue
+    const remaining = Number(product.stock) - Number(item.quantity)
+    if (remaining <= LOW_STOCK_THRESHOLD && remaining >= 0) {
+      await sendPushToAll({
+        title: "⚠️ Stock faible",
+        body: `${product.name} : il reste ${remaining} ${product.unit === "KG" ? "kg" : "pièces"}. Pensez à réapprovisionner.`,
+        url: "/admin/products",
+      }).catch((err) => console.error("Low stock push failed:", err))
+    }
+  }
+
   return { ok: true }
 }
 
-// Update status for the rest of the workflow (preparing, ready, delivered, cancelled)
 export async function updateOrderStatus(
   orderId: string,
   status: "PREPARING" | "READY" | "DELIVERED" | "CANCELLED"
